@@ -67,3 +67,15 @@ body {
   li span {
     float: right;
   }
+
+  .LOW {
+    background-color: rgb(208, 250, 146);
+  }
+
+  .MEDIUM {
+    background-color: rgb(255, 255, 162);
+  }
+
+  .HIGH {
+    background-color: rgb(255, 147, 147);
+  }
