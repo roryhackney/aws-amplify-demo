@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
 import "./../app/app.css";
@@ -9,6 +9,8 @@ import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
+import { uploadData } from "aws-amplify/storage";
+
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
@@ -16,6 +18,23 @@ const client = generateClient<Schema>();
 export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
   const {signOut} = useAuthenticator();
+  const [file, setFile] = useState<File | undefined>(undefined);
+
+  function handleFileChange (event: ChangeEvent<HTMLInputElement>) {
+    setFile(event.target.files?.[0]);
+  }
+
+  function handleFileClick() {
+    if (file) {
+        try {
+            uploadData({path: file.name, data: file});
+            console.log("Success!");
+            setFile(undefined);
+        } catch (error) {
+            console.log("Failed: " + error);
+        }
+    }
+  }
 
   function deleteTodo(id: string) {
     client.models.Todo.delete({id});
@@ -61,12 +80,12 @@ export default function App() {
       </ul>
       <div>
         🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components/">
-          Review next steps of this tutorial.
-        </a>
       </div>
       <button onClick={() => signOut()}>Sign Out</button>
+      <div>
+        <input type="file" onChange={handleFileChange}/>
+        <button onClick={handleFileClick}>Upload File</button>
+      </div>
     </main>
   );
 }
