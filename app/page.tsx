@@ -37,13 +37,11 @@ export default function App() {
         console.log("Content " + cont);
         let dif = window.prompt("LOW, MEDIUM, or HIGH difficulty?", "LOW");
         if (dif != "LOW" && dif != "MEDIUM" && dif != "HIGH") {
-            console.log("No difficulty");
             client.models.Todo.create({
-                content: cont
-                // difficulty: "LOW"
+                content: cont,
+                difficulty: "LOW"
             });
         } else {
-            console.log("Difficulty " + dif);
             console.log(client.models.Todo.create({
                 content: cont,
                 difficulty: dif
