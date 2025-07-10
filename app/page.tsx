@@ -15,6 +15,7 @@ import { uploadData, list } from "aws-amplify/storage";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
+const message = client.queries.MyFunction({});
 
 export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
@@ -84,6 +85,7 @@ export default function App() {
   return (
     <main>
       <h1>My todos</h1>
+      <p>{"Message: " + message}</p>
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
