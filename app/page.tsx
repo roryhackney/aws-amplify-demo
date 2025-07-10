@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, ReactElement } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
 import "./../app/app.css";
 import { Amplify } from "aws-amplify";
+//reexport this file after adding backend resources eg STORAGE my enemy
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 
-import { uploadData } from "aws-amplify/storage";
+import { uploadData, list } from "aws-amplify/storage";
 
 Amplify.configure(outputs);
 
@@ -19,15 +20,27 @@ export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
   const {signOut} = useAuthenticator();
   const [file, setFile] = useState<File | undefined>(undefined);
+  const [files, setFiles] = useState<ReactElement[]>();
 
   function handleFileChange (event: ChangeEvent<HTMLInputElement>) {
     setFile(event.target.files?.[0]);
   }
 
+  async function getAllFiles() {
+    const files = await list({path: "files/"});
+    const lis: ReactElement[] = files.items.map(item => <li key={item.path}>{item.path}</li>);
+    setFiles(lis);
+  }
+
   function handleFileClick() {
     if (file != undefined) {
         try {
-            uploadData({path: "files/" + file.name, data: file});
+            //looks like it does not add a duplicate file if you reupload the same thing btw but also doesn't error
+            uploadData({
+                path: `files/${file.name}`,
+                data: file,
+                // options: {bucket: "amplify-d2wntf1gotl7mx-mai-mystoragebucketd73bc5f9-p7rksjdvmf0c"}
+            });
             console.log("Success!");
         } catch (error) {
             console.log("Failed: " + error);
@@ -82,8 +95,13 @@ export default function App() {
       </div>
       <button onClick={() => signOut()}>Sign Out</button>
       <div>
-        {/* <input type="file" onChange={handleFileChange}/> */}
-        {/* <button onClick={handleFileClick}>Upload File</button> */}
+        <input type="file" onChange={handleFileChange}/>
+        <button onClick={handleFileClick}>Upload File</button>
+        <h2>Existing Files</h2>
+        <ul>
+            {files}
+        </ul>
+        <button onClick={getAllFiles}>Show Files</button>
       </div>
     </main>
   );
