@@ -16,7 +16,7 @@ const schema = a.schema({
 
   MyFunction: a.query()
             .arguments({})
-            .returns(a.string())
+            .returns(a.string().required())
             .authorization(allow => [allow.guest(), allow.authenticated()])
             .handler(a.handler.function(MyFunction))
 });
