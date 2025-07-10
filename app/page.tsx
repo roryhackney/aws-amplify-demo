@@ -25,11 +25,10 @@ export default function App() {
   }
 
   function handleFileClick() {
-    if (file) {
+    if (file != undefined) {
         try {
-            uploadData({path: file.name, data: file});
+            uploadData({path: "files/" + file.name, data: file});
             console.log("Success!");
-            setFile(undefined);
         } catch (error) {
             console.log("Failed: " + error);
         }
@@ -83,8 +82,8 @@ export default function App() {
       </div>
       <button onClick={() => signOut()}>Sign Out</button>
       <div>
-        <input type="file" onChange={handleFileChange}/>
-        <button onClick={handleFileClick}>Upload File</button>
+        {/* <input type="file" onChange={handleFileChange}/> */}
+        {/* <button onClick={handleFileClick}>Upload File</button> */}
       </div>
     </main>
   );
