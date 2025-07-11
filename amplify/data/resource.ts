@@ -15,10 +15,10 @@ const schema = a.schema({
     .authorization((allow) => [allow.publicApiKey()]),
 
   MyFunction: a.query()
-            .arguments({})
-            .returns(a.string().required())
-            .authorization(allow => [allow.guest(), allow.authenticated()])
-            .handler(a.handler.function(MyFunction))
+            .arguments({name: a.string()})
+            .returns(a.string())
+            .authorization(allow => [allow.guest()])
+            .handler(a.handler.function(MyFunction)),
 });
 
 export type Schema = ClientSchema<typeof schema>;
