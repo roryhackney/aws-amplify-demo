@@ -21,7 +21,8 @@ export default function App() {
     const {signOut} = useAuthenticator();
     const [file, setFile] = useState<File | undefined>(undefined);
     const [files, setFiles] = useState<ReactElement[]>();
-    client.queries.MyFunction({name: "Rory"}).then((data) => {console.log(data)});
+    const [message, setMessage] = useState<string | null>("Loading...");
+    client.queries.MyFunction({name: "Rory"}).then((result) => {setMessage(result.data)});
     
     function handleFileChange (event: ChangeEvent<HTMLInputElement>) {
         setFile(event.target.files?.[0]);
@@ -92,7 +93,7 @@ export default function App() {
             ))}
         </ul>
         <div>
-            🥳 App successfully hosted. Try creating a new todo.
+            {message}
         </div>
         <button onClick={() => signOut()}>Sign Out</button>
         <div>
