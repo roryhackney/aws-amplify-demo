@@ -12,14 +12,13 @@ const schema = a.schema({
       content: a.string().required(),
       difficulty: a.enum(["LOW", "MEDIUM", "HIGH"])
     })
-    // .authorization((allow) => [allow.publicApiKey()]),
-    .authorization(allow => [allow.guest(), allow.authenticated()]),
+    .authorization((allow) => [allow.publicApiKey()]),
 
   MyFunction: a.query()
             .arguments({name: a.string()})
             .returns(a.string())
-            .authorization(allow => [allow.guest()])
-            .handler(a.handler.function(MyFunction)),
+            .authorization(allow => [allow.publicApiKey()])
+            .handler(a.handler.function(MyFunction))
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -27,10 +26,10 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "iam",
-    // apiKeyAuthorizationMode: {
-    //   expiresInDays: 30,
-    // },
+    defaultAuthorizationMode: "apiKey",
+    apiKeyAuthorizationMode: {
+      expiresInDays: 30,
+    },
   },
 });
 
