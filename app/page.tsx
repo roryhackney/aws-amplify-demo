@@ -21,7 +21,7 @@ export default function App() {
     const {signOut} = useAuthenticator();
     const [file, setFile] = useState<File | undefined>(undefined);
     const [files, setFiles] = useState<ReactElement[]>();
-    client.queries.MyFunction({name: "Rory"}).then(res => {console.log(res)});
+    client.queries.MyFunction({name: "Rory"});
     
     function handleFileChange (event: ChangeEvent<HTMLInputElement>) {
         setFile(event.target.files?.[0]);
