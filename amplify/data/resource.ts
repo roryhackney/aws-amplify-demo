@@ -12,7 +12,8 @@ const schema = a.schema({
       content: a.string().required(),
       difficulty: a.enum(["LOW", "MEDIUM", "HIGH"])
     })
-    .authorization((allow) => [allow.publicApiKey()]),
+    // .authorization((allow) => [allow.publicApiKey()]),
+    .authorization(allow => [allow.guest(), allow.authenticated()]),
 
   MyFunction: a.query()
             .arguments({name: a.string()})
