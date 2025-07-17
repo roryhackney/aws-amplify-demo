@@ -3,7 +3,7 @@ import { auth } from './auth/resource.js';
 import { data } from './data/resource.js';
 import { storage } from "./storage/resource";
 import {MyFunction} from "./functions/MyFunction/resource.js";
-import { MyConstruct } from './custom/MyConstruct/resource.js';
+import { MyConstruct } from './custom/MyConstruct/resource';
 
 const backend = defineBackend({
   auth,
