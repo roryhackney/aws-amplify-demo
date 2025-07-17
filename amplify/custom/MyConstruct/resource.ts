@@ -24,7 +24,7 @@ export class MyConstruct extends Construct {
     this.bucket = new Bucket(this, validName + "-bucket", {bucketName: validName + "-bucket", publicReadAccess: true, 
         blockPublicAccess: {blockPublicAcls: false, blockPublicPolicy: false, ignorePublicAcls: false, restrictPublicBuckets: false}}
     );
-    this.queue = new sqs.Queue(this, validName + "-queue", {queueName: validName + "-queue", contentBasedDeduplication: true, fifo: false});
+    this.queue = new sqs.Queue(this, validName + "-queue.fifo", {queueName: validName + "-queue.fifo", contentBasedDeduplication: true, fifo: true});
     this.destination = new dest.SqsDestination(this.queue);
     this.bucket.addEventNotification(EventType.OBJECT_CREATED, this.destination);
   }
