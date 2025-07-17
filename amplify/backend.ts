@@ -12,5 +12,5 @@ const backend = defineBackend({
   MyFunction
 });
 
-const cloudFormationStack = backend.createStack("MyBackendStack");
-new MyConstruct(cloudFormationStack, "MyConstruct1", {name: "Construct1", age: -3});
+const cloudFormationStack = backend.createStack("my-backend-stack");
+new MyConstruct(cloudFormationStack, "my-construct1", {name: "construct1", age: -3});

@@ -20,8 +20,9 @@ export class MyConstruct extends Construct {
   constructor(scope: Construct, id: string, props: MyProps) {
     super(scope, id);
     this.age = props.age;
-    this.bucket = new Bucket(this, props.name + "-bucket", {bucketName: props.name + "-bucket!", publicReadAccess: true});
-    this.queue = new sqs.Queue(this, props.name + "-queue", {queueName: props.name + "-queue!", contentBasedDeduplication: true});
+    const validName = props.name.toLowerCase();
+    this.bucket = new Bucket(this, validName + "-bucket", {bucketName: validName + "-bucket!", publicReadAccess: true});
+    this.queue = new sqs.Queue(this, validName + "-queue", {queueName: validName + "-queue!", contentBasedDeduplication: true});
     this.destination = new dest.SqsDestination(this.queue);
     this.bucket.addEventNotification(EventType.OBJECT_CREATED, this.destination);
   }
