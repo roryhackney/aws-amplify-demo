@@ -1,16 +1,15 @@
 "use client";
 
 //ChangeEvent, ReactElement
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
 import "./../app/app.css";
 import { Amplify } from "aws-amplify";
-//reexport this file after adding backend resources eg STORAGE my enemy
+//reexport this file after adding backend resources
 import outputs from "@/amplify_outputs.json";
 import "@aws-amplify/ui-react/styles.css";
 import { useAuthenticator } from "@aws-amplify/ui-react";
-
 // import { uploadData, list } from "aws-amplify/storage";
 
 Amplify.configure(outputs);
@@ -106,6 +105,7 @@ export default function App() {
             </ul>
             <button onClick={getAllFiles}>Show Files</button>
         </div> */}
+
         </main>
     );
 }
