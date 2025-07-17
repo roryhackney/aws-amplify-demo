@@ -1,4 +1,4 @@
-import { Bucket, EventType } from 'aws-cdk-lib/aws-s3';
+import { BlockPublicAccess, Bucket, EventType } from 'aws-cdk-lib/aws-s3';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as dest from 'aws-cdk-lib/aws-s3-notifications';
 import { Construct } from 'constructs';
@@ -21,7 +21,9 @@ export class MyConstruct extends Construct {
     super(scope, id);
     this.age = props.age;
     const validName = props.name.toLowerCase();
-    this.bucket = new Bucket(this, validName + "-bucket", {bucketName: validName + "-bucket", publicReadAccess: true});
+    this.bucket = new Bucket(this, validName + "-bucket", {bucketName: validName + "-bucket", publicReadAccess: true, 
+        blockPublicAccess: {blockPublicAcls: false, blockPublicPolicy: false, ignorePublicAcls: false, restrictPublicBuckets: false}}
+    );
     this.queue = new sqs.Queue(this, validName + "-queue", {queueName: validName + "-queue", contentBasedDeduplication: true});
     this.destination = new dest.SqsDestination(this.queue);
     this.bucket.addEventNotification(EventType.OBJECT_CREATED, this.destination);
